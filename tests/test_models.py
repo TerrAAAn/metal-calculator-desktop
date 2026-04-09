@@ -6,7 +6,7 @@ materials = Material.load_from_json()
 steel = materials["Ст3"]
 
 material = Element(
-    params={'length' : 2000, 'width' : 1000},
+    params={'length' : 2000, 'width' : 1000, 'thickness' : 2},
     quantity=2,
     material=steel,
     element_type='лист'
