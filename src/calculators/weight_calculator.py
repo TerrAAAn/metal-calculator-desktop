@@ -11,6 +11,11 @@ class WeightCalculator:
         filepath = project_root / "data" / file_name
         with open(filepath, 'r', encoding="utf-8") as f:
             return json.load(f)
+        
+    def get_elbows(self):
+        if not hasattr(self, 'elbows_cache'):
+            self.elbows_cache = self.load_data('elbows.json')
+        return self.elbows_cache
 
     def calculate_weight(self, element):
         MM3_TO_M3 = 1_000_000_000
@@ -50,7 +55,7 @@ class WeightCalculator:
                 return (3.14 * (d/2)**2) * thickness * element.material.density * element.quantity / MM3_TO_M3
             case 'отвод':
                 size = element.params['size']
-                elbows = self.load_data('elbows.json')
+                elbows = self.get_elbows()
                 mass = elbows[size]
                 return mass * element.quantity
             case _:
