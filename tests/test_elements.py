@@ -1,6 +1,6 @@
 from src.domain.material import Material
 from src.domain.element import Element
-from src.calculators.weight_calculator import calculate_weight
+from src.calculators.weight_calculator import WeightCalculator
 
 materials = Material.load_from_json()
 
@@ -34,9 +34,34 @@ prof = Element(
     material=steel,
     element_type='труба профильная'
 )
-print(calculate_weight(plate))
-print(calculate_weight(circle))
-print(calculate_weight(tube))
-print(calculate_weight(prof))
 
+angle = Element(
+    element_type='уголок',
+    params={'width_a' : 40,  'width_b' : 50, 'thickness' :5, 'length' : 6000},
+    quantity=4,
+    material=steel
+)
+
+elbow = Element(
+    element_type='отвод',
+    params={'size' : "32x2,5"},
+    quantity=2,
+    material=steel
+)
+
+unexpected = Element(
+    element_type='слесарь',
+    params={'mass' : 80,  'width_b' : 50, 'thickness' :5, 'length' : 6000},
+    quantity=1,
+    material=steel
+)
+calculator = WeightCalculator()
+
+print(calculator.calculate_weight(plate))
+print(calculator.calculate_weight(circle))
+print(calculator.calculate_weight(tube))
+print(calculator.calculate_weight(prof))
+print(calculator.calculate_weight(angle))
+print(calculator.calculate_weight(elbow))
+#print(calculate_weight(unexpected))
 
