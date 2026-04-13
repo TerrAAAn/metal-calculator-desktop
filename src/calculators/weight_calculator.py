@@ -56,7 +56,7 @@ class WeightCalculator:
             case 'отвод':
                 size = element.params['size']
                 elbows = self.get_elbows()
-                mass = elbows[size]
+                mass = elbows['weight'][size]
                 return mass * element.quantity
             case _:
                 raise ValueError(f"Неизвестный тип элемента: {element.element_type}") 
