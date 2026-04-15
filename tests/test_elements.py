@@ -49,6 +49,27 @@ elbow = Element(
     material=steel
 )
 
+reducer = Element(
+    element_type='переход',
+    params={'size' : "76x57"},
+    quantity=2,
+    material=steel
+)
+
+beam = Element(
+    element_type='балка',
+    params={'size' : "40", 'length' : 1},
+    quantity=1,
+    material=steel
+)
+
+channel = Element(
+    element_type='швеллер',
+    params={'size' :"5у", 'length' : 1},
+    quantity=1,
+    material=steel
+)
+
 unexpected = Element(
     element_type='слесарь',
     params={'mass' : 80,  'width_b' : 50, 'thickness' :5, 'length' : 6000},
@@ -63,5 +84,8 @@ print(calculator.calculate_weight(tube))
 print(calculator.calculate_weight(prof))
 print(calculator.calculate_weight(angle))
 print(calculator.calculate_weight(elbow))
+print(calculator.calculate_weight(reducer))
+print(calculator.calculate_weight(beam))
+print(calculator.calculate_weight(channel))
 #print(calculate_weight(unexpected))
 

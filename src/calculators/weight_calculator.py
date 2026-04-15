@@ -16,6 +16,21 @@ class WeightCalculator:
         if not hasattr(self, 'elbows_cache'):
             self.elbows_cache = self.load_data('elbows.json')
         return self.elbows_cache
+    
+    def get_reducers(self):
+        if not hasattr(self, 'reducers_cache'):
+            self.reducers_cache = self.load_data('reducers.json')
+        return self.reducers_cache
+    
+    def get_beams(self):
+        if not hasattr(self, 'beams_cache'):
+            self.beams_cache = self.load_data('beams.json')
+        return self.beams_cache
+    
+    def get_channels(self):
+        if not hasattr(self, 'channels_cache'):
+            self.channels_cache = self.load_data('channels.json')
+        return self.channels_cache
 
     def calculate_weight(self, element):
         MM3_TO_M3 = 1_000_000_000
@@ -58,6 +73,23 @@ class WeightCalculator:
                 elbows = self.get_elbows()
                 mass = elbows['weight'][size]
                 return mass * element.quantity
+            case 'переход':
+                size = element.params['size']
+                reducers = self.get_reducers()
+                mass = reducers['weight'][size]
+                return mass * element.quantity
+            case 'швеллер':
+                size = element.params['size']
+                length = element.params['length']
+                channels = self.get_channels()
+                mass = channels['weight'][size] 
+                return mass * length * element.quantity
+            case 'балка':
+                size = element.params['size']
+                length = element.params['length']
+                beams = self.get_beams()
+                mass = beams['weight'][size]
+                return mass * length * element.quantity
             case _:
                 raise ValueError(f"Неизвестный тип элемента: {element.element_type}") 
 
