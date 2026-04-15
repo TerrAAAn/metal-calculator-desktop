@@ -77,16 +77,32 @@ unexpected = Element(
     quantity=1,
     material=steel
 )
-calculator = AreaCalculator()
 
-print(calculator.calculate_area(plate))
-print(calculator.calculate_area(circle))
-print(calculator.calculate_area(tube))
-print(calculator.calculate_area(prof))
-print(calculator.calculate_area(angle))
-print(calculator.calculate_area(elbow))
-print(calculator.calculate_area(reducer))
-print(calculator.calculate_area(beam))
-print(calculator.calculate_area(channel))
-#print(calculate_area(unexpected))
+area_calculator = AreaCalculator()
+weight_calculator = WeightCalculator()
+
+
+print('Площади:')
+print(area_calculator.calculate_area(plate))
+print(area_calculator.calculate_area(circle))
+print(area_calculator.calculate_area(tube))
+print(area_calculator.calculate_area(prof))
+print(area_calculator.calculate_area(angle))
+print(area_calculator.calculate_area(elbow))
+print(area_calculator.calculate_area(reducer))
+print(area_calculator.calculate_area(beam))
+print(area_calculator.calculate_area(channel))
+print('Вес:')
+print(weight_calculator.calculate_weight(plate))
+print(weight_calculator.calculate_weight(circle))
+print(weight_calculator.calculate_weight(tube))
+print(weight_calculator.calculate_weight(prof))
+print(weight_calculator.calculate_weight(angle))
+print(weight_calculator.calculate_weight(elbow))
+print(weight_calculator.calculate_weight(reducer))
+print(weight_calculator.calculate_weight(beam))
+print(weight_calculator.calculate_weight(channel))
+#print(weight_calculator.calculate_weight(unexpected))
+
+
 
