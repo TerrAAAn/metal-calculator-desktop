@@ -1,7 +1,4 @@
-import json
-from pathlib import Path
 from src.utils.data_loaders import DataLoader
-
 
 class WeightCalculator:
     def __init__(self):
@@ -59,7 +56,7 @@ class WeightCalculator:
                 channels = self.loader.get('channels.json')
                 mass = channels['weight'][size] 
                 return mass * length * element.quantity
-            case 'балка':
+            case 'балка'| 'двутавр':
                 size = element.params['size']
                 length = element.params['length']
                 beams = self.loader.get('beams.json')

@@ -1,6 +1,7 @@
 from src.domain.material import Material
 from src.domain.element import Element
 from src.calculators.weight_calculator import WeightCalculator
+from src.calculators.area_calculator import AreaCalculator
 
 materials = Material.load_from_json()
 
@@ -76,16 +77,16 @@ unexpected = Element(
     quantity=1,
     material=steel
 )
-calculator = WeightCalculator()
+calculator = AreaCalculator()
 
-print(calculator.calculate_weight(plate))
-print(calculator.calculate_weight(circle))
-print(calculator.calculate_weight(tube))
-print(calculator.calculate_weight(prof))
-print(calculator.calculate_weight(angle))
-print(calculator.calculate_weight(elbow))
-print(calculator.calculate_weight(reducer))
-print(calculator.calculate_weight(beam))
-print(calculator.calculate_weight(channel))
-#print(calculate_weight(unexpected))
+print(calculator.calculate_area(plate))
+print(calculator.calculate_area(circle))
+print(calculator.calculate_area(tube))
+print(calculator.calculate_area(prof))
+print(calculator.calculate_area(angle))
+print(calculator.calculate_area(elbow))
+print(calculator.calculate_area(reducer))
+print(calculator.calculate_area(beam))
+print(calculator.calculate_area(channel))
+#print(calculate_area(unexpected))
 
