@@ -1,36 +1,11 @@
 import json
 from pathlib import Path
+from src.utils.data_loaders import DataLoader
+
 
 class WeightCalculator:
     def __init__(self):
-        pass
-
-    def load_data(self, file_name):
-        current_file = Path(__file__)
-        project_root = current_file.parent.parent.parent
-        filepath = project_root / "data" / file_name
-        with open(filepath, 'r', encoding="utf-8") as f:
-            return json.load(f)
-        
-    def get_elbows(self):
-        if not hasattr(self, 'elbows_cache'):
-            self.elbows_cache = self.load_data('elbows.json')
-        return self.elbows_cache
-    
-    def get_reducers(self):
-        if not hasattr(self, 'reducers_cache'):
-            self.reducers_cache = self.load_data('reducers.json')
-        return self.reducers_cache
-    
-    def get_beams(self):
-        if not hasattr(self, 'beams_cache'):
-            self.beams_cache = self.load_data('beams.json')
-        return self.beams_cache
-    
-    def get_channels(self):
-        if not hasattr(self, 'channels_cache'):
-            self.channels_cache = self.load_data('channels.json')
-        return self.channels_cache
+        self.loader = DataLoader()
 
     def calculate_weight(self, element):
         MM3_TO_M3 = 1_000_000_000
@@ -70,24 +45,24 @@ class WeightCalculator:
                 return (3.14 * (d/2)**2) * thickness * element.material.density * element.quantity / MM3_TO_M3
             case 'отвод':
                 size = element.params['size']
-                elbows = self.get_elbows()
+                elbows = self.loader.get('elbows.json')
                 mass = elbows['weight'][size]
                 return mass * element.quantity
             case 'переход':
                 size = element.params['size']
-                reducers = self.get_reducers()
+                reducers = self.loader.get('reducers.json')
                 mass = reducers['weight'][size]
                 return mass * element.quantity
             case 'швеллер':
                 size = element.params['size']
                 length = element.params['length']
-                channels = self.get_channels()
+                channels = self.loader.get('channels.json')
                 mass = channels['weight'][size] 
                 return mass * length * element.quantity
             case 'балка':
                 size = element.params['size']
                 length = element.params['length']
-                beams = self.get_beams()
+                beams = self.loader.get('beams.json')
                 mass = beams['weight'][size]
                 return mass * length * element.quantity
             case _:
