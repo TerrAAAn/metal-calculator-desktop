@@ -47,8 +47,8 @@ angle = Element(
 
 elbow = Element(
     element_type='отвод',
-    params={'size' : "32x2,5"},
-    quantity=2,
+    params={'size' : "57x3,5"},
+    quantity=4,
     material=steel
 )
 
@@ -91,4 +91,13 @@ gas_pipeline = Construction(
     weight_calculator = weight_calc
 )
 
+pylon = Construction(
+    name = 'Опора тип 1',
+    quantity= 10,
+    elements=[plate, angle, prof, beam, channel],
+    area_calculator = area_calc,
+    weight_calculator = weight_calc
+)
+
 print(gas_pipeline)
+print(pylon)
