@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.domain.element import Element
+from src.domain.material import Material
 from src.utils.data_loaders import DataLoader
 
 class ElementEditor:
@@ -60,10 +61,16 @@ class ElementEditor:
     def save(self):
         element_type = self.type_var.get()
         quantity = self.quantity_var.get()
-        material = self.material_var.get()
-
-        print(f'Создан элемент: тип={element_type}, количество={quantity}, материал: {material}')
-        self.result = {'type' : element_type, 'quantity' : quantity, 'material': material}
+        material_name = self.material_var.get()
+        materials = self.data_loader.get('steel_grades.json')
+        density = materials[material_name]
+        material_obj = Material(material_name, density)
+        self.result = Element(
+            element_type=element_type,
+            quantity= quantity,
+            material=material_obj,
+            params={}
+        )
         self.window.destroy()
 
     def cancel(self):

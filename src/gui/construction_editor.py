@@ -24,6 +24,8 @@ class ConstructionEditor:
             construction = self.construction_list[self.edit_index]
             self.name_var.set(construction.name)
             self.count_var.set(construction.quantity)
+            self.elements = construction.elements.copy()
+            self.refresh_elements_list()
 
     def create_widgets(self):
         top_frame = ttk.Frame(self.window)
@@ -62,24 +64,33 @@ class ConstructionEditor:
         center_frame = ttk.Frame(self.window)
         center_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=10, pady=10)
 
-        self.btn_add = ttk.Button(center_frame, text="Добавить/редактировать элемент", command=self.on_add)
+        self.btn_add = ttk.Button(center_frame, text="Добавить элемент", command=self.on_add)
         self.btn_add.pack(side=tk.LEFT, padx=5)
 
         self.btn_dell = ttk.Button(center_frame, text="Удалить элемент", command=self.on_dell)
         self.btn_dell.pack(side=tk.LEFT, padx=5)
    
     def on_add(self):
-        ElementEditor(
+        editor = ElementEditor(
             parent=self.window,
             weight_calculator=self.weight_calc,
             area_calculator=self.area_calc,
             data_loader=self.data_loader,
             existing_element=None
         )
+        self.window.wait_window(editor.window)
+        if editor.result is not None:
+            self.elements.append(editor.result)
+            self.refresh_elements_list()
 
 
     def on_dell(self):
-        messagebox.showinfo("Info", "В разработке...")
+        selection = self.listbox.curselection()
+        if selection:
+            self.elements.pop(selection[0])
+        else:
+            messagebox.showwarning("Info", "Выберете элемент для удаления")
+        self.refresh_elements_list()
 
 
     def save(self):
@@ -108,3 +119,12 @@ class ConstructionEditor:
 
     def cancel(self):
         self.window.destroy()
+
+    def refresh_elements_list(self):
+        self.listbox.delete(0, tk.END)
+        if len(self.elements) == 0:
+            pass
+        else:
+            for element in self.elements:
+                display_text = f"{element.element_type}, {element.params} кол-во: {element.quantity} шт"
+                self.listbox.insert(tk.END, display_text)
