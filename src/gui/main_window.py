@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from src.gui.construction_editor import ConstructionEditor
 
 class MainWindow:
     def __init__(self, root, weight_calculator, area_calculator, data_loader):
@@ -51,11 +52,21 @@ class MainWindow:
         
 
     def on_add(self):
-        messagebox.showinfo("Info", "В разработке...")
-        self.refresh_list()
-
+        ConstructionEditor(
+            parent=self.root, 
+            construction_list=self.constructions, 
+            weight_calculator=self.weight_calculator,
+            area_calculator=self.area_calculator,
+            data_loader=self.data_loader,
+            edit_index=None
+            )
+        
     def on_delete(self):
-        messagebox.showinfo("Info", "В разработке...")
+        selection = self.listbox.curselection()
+        if selection:
+            self.constructions.pop(selection[0])
+        else:
+            messagebox.showwarning("Info", "Выберете элемент для удаления")
         self.refresh_list()
 
     def on_edit(self):
