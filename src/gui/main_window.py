@@ -53,7 +53,8 @@ class MainWindow:
 
     def on_add(self):
         ConstructionEditor(
-            parent=self.root, 
+            main_window=self,
+            root=self.root, 
             construction_list=self.constructions, 
             weight_calculator=self.weight_calculator,
             area_calculator=self.area_calculator,
@@ -70,7 +71,19 @@ class MainWindow:
         self.refresh_list()
 
     def on_edit(self):
-        messagebox.showinfo("Info", "В разработке...")
+        selection = self.listbox.curselection()
+        if selection:
+            ConstructionEditor(
+                main_window=self,
+                root=self.root,  
+                construction_list=self.constructions, 
+                weight_calculator=self.weight_calculator,
+                area_calculator=self.area_calculator,
+                data_loader=self.data_loader,
+                edit_index=selection[0]
+                )
+        else:
+            messagebox.showwarning("Info", "Выберете элемент для редактирования")
         self.refresh_list()
 
     def on_report(self):
