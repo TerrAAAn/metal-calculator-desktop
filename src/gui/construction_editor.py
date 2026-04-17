@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.domain.construction import Construction
+from src.gui.element_editor import ElementEditor
 
 class ConstructionEditor:
     def __init__(self, main_window, root, construction_list, weight_calculator, area_calculator, data_loader, edit_index = None):
@@ -61,14 +62,20 @@ class ConstructionEditor:
         center_frame = ttk.Frame(self.window)
         center_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=10, pady=10)
 
-        self.btn_add = ttk.Button(center_frame, text="Добавить элемент", command=self.on_add)
+        self.btn_add = ttk.Button(center_frame, text="Добавить/редактировать элемент", command=self.on_add)
         self.btn_add.pack(side=tk.LEFT, padx=5)
 
         self.btn_dell = ttk.Button(center_frame, text="Удалить элемент", command=self.on_dell)
         self.btn_dell.pack(side=tk.LEFT, padx=5)
    
     def on_add(self):
-        messagebox.showinfo("Info", "В разработке...")
+        ElementEditor(
+            parent=self.window,
+            weight_calculator=self.weight_calc,
+            area_calculator=self.area_calc,
+            data_loader=self.data_loader,
+            existing_element=None
+        )
 
 
     def on_dell(self):
