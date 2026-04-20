@@ -126,5 +126,5 @@ class ConstructionEditor:
             pass
         else:
             for element in self.elements:
-                display_text = f"{element.element_type}, {element.params} кол-во: {element.quantity} шт"
+                display_text = f"{element.element_type}, {element.get_display_string()} кол-во: {element.quantity} шт"
                 self.listbox.insert(tk.END, display_text)
