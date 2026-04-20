@@ -93,7 +93,7 @@ class ElementEditor:
                 try:
                     params = {
                         'd' : self.to_float(self.d_var.get()),
-                        'length' : self.to_float(self.length_var.get())
+                        'length' : self.to_float(self.length_var.get()) * 1000
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
@@ -103,7 +103,7 @@ class ElementEditor:
                     params = {
                         'd' : self.to_float(self.d_var.get()),
                         'thickness' : self.to_float(self.thickness_var.get()),
-                        'length' : self.to_float(self.length_var.get())
+                        'length' : self.to_float(self.length_var.get()) * 1000
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
@@ -114,7 +114,7 @@ class ElementEditor:
                         'width' : self.to_float(self.width_var.get()),
                         'height' : self.to_float(self.height_var.get()),
                         'thickness' : self.to_float(self.thickness_var.get()),
-                        'length' : self.to_float(self.length_var.get()) 
+                        'length' : self.to_float(self.length_var.get()) * 1000
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
@@ -125,7 +125,7 @@ class ElementEditor:
                         'width_a' : self.to_float(self.width_a_var.get()),
                         'width_b' : self.to_float(self.width_b_var.get()),
                         'thickness' : self.to_float(self.thickness_var.get()),
-                        'length' : self.to_float(self.length_var.get()) 
+                        'length' : self.to_float(self.length_var.get()) * 1000
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
@@ -147,7 +147,7 @@ class ElementEditor:
                 try:
                     params = {
                         'size' : self.size_var.get(),
-                        'length' : self.to_float(self.length_var.get()) 
+                        'length' : self.to_float(self.length_var.get()) * 1000
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
@@ -222,7 +222,7 @@ class ElementEditor:
         self.d_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.d_var).grid(row=0, column=1)
 
-        ttk.Label(self.params_frame, text="Длина (мм):").grid(row=1, column=0)
+        ttk.Label(self.params_frame, text="Длина (м):").grid(row=1, column=0)
         self.length_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.length_var).grid(row=1, column=1)
 
@@ -235,7 +235,7 @@ class ElementEditor:
         self.thickness_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.thickness_var).grid(row=1, column=1)
 
-        ttk.Label(self.params_frame, text="Длина (мм):").grid(row=2, column=0)
+        ttk.Label(self.params_frame, text="Длина (м):").grid(row=2, column=0)
         self.length_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.length_var).grid(row=2, column=1)
     
@@ -252,7 +252,7 @@ class ElementEditor:
         self.thickness_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.thickness_var).grid(row=2, column=1)
 
-        ttk.Label(self.params_frame, text="Длина (мм):").grid(row=3, column=0)
+        ttk.Label(self.params_frame, text="Длина (м):").grid(row=3, column=0)
         self.length_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.length_var).grid(row=3, column=1)
 
@@ -269,7 +269,7 @@ class ElementEditor:
         self.thickness_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.thickness_var).grid(row=2, column=1)
 
-        ttk.Label(self.params_frame, text="Длина (мм):").grid(row=3, column=0)
+        ttk.Label(self.params_frame, text="Длина (м):").grid(row=3, column=0)
         self.length_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.length_var).grid(row=3, column=1)
     
@@ -299,7 +299,7 @@ class ElementEditor:
         data = self.data_loader.get(file_name)
         sizes = list(data['weight'].keys())
 
-        ttk.Label(self.params_frame, text="Длина (мм):").grid(row=0, column=0)
+        ttk.Label(self.params_frame, text="Длина (м):").grid(row=0, column=0)
         self.length_var = tk.StringVar()
         tk.Entry(self.params_frame, textvariable=self.length_var).grid(row=0, column=1)
 

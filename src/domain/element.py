@@ -19,18 +19,18 @@ class Element:
             case "лист":
                 return f"{self.params['length']}x{self.params['width']}, толщ. {self.params['thickness']}"
             case "круг":
-                return f"{self.params['d']}, L={self.params['length']}"
+                return f"{self.params['d']}, L={self.params['length']/1000}м"
             case "труба":
-                return f"{self.params['d']}x{self.params['thickness']}, L={self.params['length']}"
+                return f"{self.params['d']}x{self.params['thickness']}, L={self.params['length']/1000}м"
             case "труба профильная":
-                return f"{self.params['width']}x{self.params['height']} толщ. {self.params['thickness']},  L={self.params['length']}"
+                return f"{self.params['width']}x{self.params['height']} толщ. {self.params['thickness']},  L={self.params['length']/1000}м"
             case 'уголок':
-                return f"{self.params['width_a']}x{self.params['width_b']} толщ. {self.params['thickness']},  L={self.params['length']}"
+                return f"{self.params['width_a']}x{self.params['width_b']} толщ. {self.params['thickness']},  L={self.params['length']/1000}м"
             case 'отвод' | 'переход':
                 return f"{self.params['size']}"
             case 'заглушка':
                 return f"{self.params['d']}x{self.params['thickness']}"
             case 'балка' | 'швеллер':
-                return f"{self.params['size']}, L={self.params['length']}"
+                return f"{self.params['size']}, L={self.params['length']/1000}м"
             case _:
                 return "Unknown params"   
