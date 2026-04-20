@@ -6,16 +6,22 @@ class DataLoader:
     def __init__(self):
         self.cache = {}
 
-    def get_base_path(self):
+    def _get_base_path(self):
+     
         if getattr(sys, 'frozen', False):
-            return Path(sys.executable).parent
-        else:
-            return Path(__file__).parent.parent.parent
             
-    def load_data(self, file_name):
-        base_path = self.get_base_path()
+            return Path(sys._MEIPASS)
+        else:
+            
+            return Path(__file__).parent.parent.parent
 
+    def load_data(self, file_name):
+        base_path = self._get_base_path()
         filepath = base_path / "data" / file_name
+        
+        if not filepath.exists():
+            raise FileNotFoundError(f"Файл не найден: {filepath}")
+        
         with open(filepath, 'r', encoding="utf-8") as f:
             return json.load(f)
         
