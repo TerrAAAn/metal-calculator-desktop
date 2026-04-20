@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.gui.construction_editor import ConstructionEditor
+from src.gui.report_view import ReportView
 
 class MainWindow:
     def __init__(self, root, weight_calculator, area_calculator, data_loader):
@@ -87,4 +88,10 @@ class MainWindow:
         self.refresh_list()
 
     def on_report(self):
-        messagebox.showinfo("Info", "В разработке...")
+        ReportView(
+            main_window=self.root,
+            construction_list=self.constructions,
+            weight_calculator=self.weight_calculator,
+            area_calculator=self.area_calculator,
+            data_loader=self.data_loader
+        )
