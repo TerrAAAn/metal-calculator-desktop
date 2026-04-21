@@ -147,7 +147,7 @@ class ElementEditor:
                 try:
                     params = {
                         'size' : self.size_var.get(),
-                        'length' : self.to_float(self.length_var.get()) * 1000
+                        'length' : self.to_float(self.length_var.get()) # Параметры за 1 м!!!
                     }
                 except ValueError:
                     messagebox.showerror("Ошибка", "Введите корректные значения")
