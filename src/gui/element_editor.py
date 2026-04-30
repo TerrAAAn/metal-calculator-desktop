@@ -30,7 +30,7 @@ class ElementEditor:
         self.type_combo.bind("<<ComboboxSelected>>", self.on_type_change)
 
         ttk.Label(self.window, text="Количество:").pack(pady=5)
-        self.quantity_var = tk.IntVar(value=1)
+        self.quantity_var = tk.StringVar(value=1)
         tk.Entry(self.window, textvariable=self.quantity_var).pack(pady=5)
 
         ttk.Label(self.window, text="Материал:").pack(pady=5)
@@ -64,9 +64,9 @@ class ElementEditor:
 
     def save(self):
         element_type = self.type_var.get()
-        quantity = self.quantity_var.get()
+        quantity = self.to_float(self.quantity_var.get())
 
-        if not quantity > 0:
+        if quantity is None or quantity <= 0:
             messagebox.showerror("Ошибка", "Некорректное количество")
             return None
 

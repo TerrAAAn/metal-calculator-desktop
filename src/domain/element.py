@@ -31,6 +31,6 @@ class Element:
             case 'заглушка':
                 return f"{self.params['d']}x{self.params['thickness']}"
             case 'балка' | 'швеллер':
-                return f"{self.params['size']}, L={self.params['length']/1000}м"
+                return f"{self.params['size']}, L={self.params['length']}м"
             case _:
                 return "Unknown params"   

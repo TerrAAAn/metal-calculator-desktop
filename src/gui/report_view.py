@@ -24,8 +24,8 @@ class ReportView:
 
 
         for construction in self.construction_list:
-            weight = round(construction.total_weight(), 2)
-            area = round(construction.total_area(),2)
+            weight = round(construction.total_weight() * construction.quantity, 2)
+            area = round(construction.total_area() * construction.quantity,2)
             construction_info = f'{construction.name}: Общий вес:{weight} кг. Общая площадь: {area} м2\n'
             text_widget.insert(tk.END, construction_info)
 
