@@ -7,7 +7,7 @@ class Calculated_element(Base_Element):
         self.params = params
 
     def get_weight(self):
-        return self.get_cross_section_area() * self.density * self.quantity
+        return self.get_volume() * self.density * self.quantity
     
     def get_painting_area(self):
         return self.get_surface_area() * self.quantity
