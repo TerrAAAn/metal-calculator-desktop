@@ -12,6 +12,8 @@ class Pipe(Calculated_element):
             'thickness' : {"label": "Толщина стенки (мм)", "default": 3.5},
             'length' : {"label" : "Длина (м)", "default" : 1}
         }
+    def get_display_string(self):
+        return f'Труба {self.params['diameter']}x{self.params['thickness']} мм, L = {self.params['length']}м. - {self.quantity} шт.'
     
     def get_volume(self):
         d = self.params['diameter'] / 1000
@@ -34,6 +36,10 @@ class Round_bar(Calculated_element):
             'length' : {"label" : "Длина (м)", "default" : 1}
         }
     
+    def get_display_string(self):
+        return f'Круг {self.params['diameter']} мм , L = {self.params['length']}м. - {self.quantity} шт.'
+    
+    
     def get_volume(self):
         d = self.params['diameter'] / 1000
         cross_section_area = PI * (d**2) / 4
@@ -54,6 +60,9 @@ class Sheet(Calculated_element):
             'width' : {"label" : "Ширина (мм)", "default" : 1000},
             'thickness' : {"label" : "Толщина (мм)", "default" : 4}
         }
+    
+    def get_display_string(self):
+        return f'Лист {self.params['length']} x {self.params['width']} x {self.params['thickness']} мм. - {self.quantity} шт.'
     
     def get_volume(self):
         l = self.params['length'] / 1000
@@ -78,6 +87,9 @@ class Strip(Calculated_element):
             'thickness' : {"label" : "Толщина (мм)", "default" : 4}
         }
     
+    def get_display_string(self):
+        return f'Полоса {self.params['width']} x {self.params['thickness']} мм, L = {self.params['length']}м. - {self.quantity} шт.'
+    
     def get_volume(self):
         l = self.params['length'] 
         w = self.params['width'] / 1000
@@ -101,6 +113,9 @@ class Profile_pipe(Calculated_element):
             'thickness' : {"label" : "Толщина (мм)", "default" : 3},
             'length' : {"label" : "Длина (м)", "default" : 1}       
         }
+    
+    def get_display_string(self):
+        return f'Профильная труба {self.params['width']} x {self.params['height']} x {self.params['thickness']} мм, L = {self.params['length']}м. - {self.quantity} шт.'
     
     def get_volume(self):
         l = self.params['length'] 
@@ -130,6 +145,9 @@ class Angle(Calculated_element):
             'length' : {"label" : "Длина (м)", "default" : 1}
         }
     
+    def get_display_string(self):
+        return f'Уголок {self.params['width_a']} x {self.params['width_b']} x {self.params['thickness']} мм, L ={self.params['length']}м. - {self.quantity} шт.'
+    
     def get_volume(self):
         w_a = self.params['width_a'] / 1000
         w_b = self.params['width_b'] / 1000
@@ -153,6 +171,9 @@ class Cap(Calculated_element):
             'diameter' : {"label": "Диаметр (мм)", "default": 57},
             'thickness' : {"label": "Толщина стенки (мм)", "default": 3.5}
         }
+    
+    def get_display_string(self):
+        return f'Заглушка {self.params['diameter']}x{self.params['thickness']} мм,  - {self.quantity} шт.'
     
     def get_volume(self):
         d = self.params['diameter'] / 1000

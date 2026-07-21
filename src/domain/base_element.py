@@ -14,11 +14,11 @@ class Base_Element(ABC):
     def get_painting_area(self):
         pass
     
-   # @abstractmethod
-   # def get_display_string(self):
-   #     pass
+    @abstractmethod
+    def get_display_string(self):
+        pass
 
-   # @abstractmethod
-   # def get_params_dict(self):
-   #     pass
+    @abstractmethod
+    def get_params_dict(self):
+        pass
     

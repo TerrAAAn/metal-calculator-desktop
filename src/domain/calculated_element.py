@@ -12,3 +12,12 @@ class Calculated_element(Base_Element):
     def get_painting_area(self):
         return self.get_surface_area() * self.quantity
 
+    def get_params_dict(self):
+        return {
+            'element_name' : self.__class__.__name__,
+            'params' : self.params,
+            'desinty' : self.density,
+            'quantity' : self.quantity,
+            'weight' : self.get_weight(),
+            'painting_area' : self.get_painting_area()
+        }

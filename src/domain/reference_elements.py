@@ -12,6 +12,8 @@ class Beam(Reference_element):
             'size' : {"label": "Типоразмер", "default": '10б1'},
             'length' : {"label": "Длина, м", "default": 1}
         }
+    def get_display_string(self):
+        return f'Балка {self.params['size']}, L = {self.params['length']}м - {self.quantity} шт.'
     
     def get_unit_weight(self):
         weight_data = self.loader.get('beams.json')['weight']
@@ -33,6 +35,9 @@ class Channel(Reference_element):
             'length' : {"label": "Длина, м", "default": 1}
         }
     
+    def get_display_string(self):
+        return f'Швеллер {self.params['size']}, L = {self.params['length']}м - {self.quantity} шт.'
+
     def get_unit_weight(self):
         weight_data = self.loader.get('channels.json')['weight']
         return weight_data[self.params['size']] * self.params['length']
@@ -52,6 +57,9 @@ class Elbow(Reference_element):
             'size' : {"label": "Типоразмер", "default": '57x3,5'}
         }
     
+    def get_display_string(self):
+        return f'Отвод {self.params['size']} - {self.quantity} шт.'
+    
     def get_unit_weight(self):
         weight_data = self.loader.get('elbows.json')['weight']
         return weight_data[self.params['size']] 
@@ -70,6 +78,9 @@ class Reducer(Reference_element):
         return {
             'size' : {'label': 'Типоразмер', 'default': '57x32'}
         }
+    
+    def get_display_string(self):
+        return f'Переход {self.params['size']} - {self.quantity} шт.'
     
     def get_unit_weight(self):
         weight_data = self.loader.get('reducers.json')['weight']

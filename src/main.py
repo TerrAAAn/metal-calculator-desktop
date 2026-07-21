@@ -25,7 +25,7 @@ def main():
     ]
 
     for el in elements_list:
-        print(f'Weight: {el.get_weight()}, Area: {el.get_painting_area()};')
+        print(f'Weight: {el.get_weight()}, Area: {el.get_painting_area()};\n {el.get_display_string()}')
       
     beam = Beam(params={'size' : '10б1', 'length' : 10}, quantity=2)
     print(beam.get_weight(), beam.get_painting_area())
@@ -38,6 +38,16 @@ def main():
 
     reducer = Reducer(params={'size' : '57x32'}, quantity=2)
     print(reducer.get_weight(), reducer.get_painting_area())
+
+    print(beam.get_display_string())
+    print(channel.get_display_string())
+    print(elbow.get_display_string())
+    print(reducer.get_display_string())
+
+    print(reducer.get_params_dict())
+
+    pipe = Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2)
+    print(pipe.get_params_dict())
 
 if __name__ == "__main__":
     main()
