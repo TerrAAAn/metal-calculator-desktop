@@ -16,7 +16,7 @@ class Calculated_element(Base_Element):
         return {
             'element_name' : self.__class__.__name__,
             'params' : self.params,
-            'desinty' : self.density,
+            'density' : self.density,
             'quantity' : self.quantity,
             'weight' : self.get_weight(),
             'painting_area' : self.get_painting_area()

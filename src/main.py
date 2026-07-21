@@ -6,6 +6,7 @@ from src.domain.calculated_element import Calculated_element
 from src.domain.calculated_elements import Pipe, Sheet, Round_bar, Strip, Angle, Profile_pipe, Cap
 from src.domain.reference_element import Reference_element
 from src.domain.reference_elements import Beam, Channel, Elbow, Reducer
+from src.domain.factory import create_element, restore_element
 
 loader = DataLoader()
 
@@ -48,6 +49,14 @@ def main():
 
     pipe = Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2)
     print(pipe.get_params_dict())
+
+    pipe = create_element("Pipe", {"diameter": 219, "thickness": 6, "length": 12.5}, density=7850, quantity=2)
+    print(pipe.get_weight())
+    
+    data = pipe.get_params_dict()
+    print(data)
+    restored = restore_element(data)
+    print(restored.get_weight()) 
 
 if __name__ == "__main__":
     main()
