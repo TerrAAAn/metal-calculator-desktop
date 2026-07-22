@@ -1,3 +1,4 @@
+from src.domain.factory import restore_element
 
 class Construction:
     def __init__(self, name = 'Металлоконструкция', quantity = 1):
@@ -55,6 +56,18 @@ class Construction:
             raise AttributeError(f'Элемент {element} не имеет атрибута количество')
         
     def get_display_string(self):
-        return f'{self.name} - {self.quantity} шт.'
+        return f'{self.name} - {self.quantity} шт. Вес: {self.get_total_weight()} кг, Площадь окраски: {self.get_total_painting_area()} м2'
     
+    def to_dict(self):
+        return {
+            'name' : self.name,
+            'quantity' : self.quantity,
+            'elements_list' : [element.get_params_dict() for element in self.elements_list],
+        }
     
+    @classmethod
+    def from_dict(cls, data : dict):
+        construction = cls(data['name'], data['quantity'])
+        for element_data in data['elements_list']:
+            construction.add_element(restore_element(element_data))
+        return construction

@@ -7,6 +7,8 @@ from src.domain.calculated_elements import Pipe, Sheet, Round_bar, Strip, Angle,
 from src.domain.reference_element import Reference_element
 from src.domain.reference_elements import Beam, Channel, Elbow, Reducer
 from src.domain.factory import create_element, restore_element
+from src.domain.construction import Construction
+from src.domain.project import Project
 
 loader = DataLoader()
 
@@ -40,23 +42,26 @@ def main():
     reducer = Reducer(params={'size' : '57x32'}, quantity=2)
     print(reducer.get_weight(), reducer.get_painting_area())
 
-    print(beam.get_display_string())
-    print(channel.get_display_string())
-    print(elbow.get_display_string())
-    print(reducer.get_display_string())
+    project_1 = Project('Amogus')
 
-    print(reducer.get_params_dict())
-
-    pipe = Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2)
-    print(pipe.get_params_dict())
-
-    pipe = create_element("Pipe", {"diameter": 219, "thickness": 6, "length": 12.5}, density=7850, quantity=2)
-    print(pipe.get_weight())
+    construction_1 = Construction('Опора 1', 2)
+    construction_1.add_element(beam)
+    construction_1.add_element(Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2))
     
-    data = pipe.get_params_dict()
+    project_1.add_construction(construction_1)
+
+    print(construction_1.get_total_weight())
+    print(construction_1.get_total_painting_area())
+
+    construction_1.replace_element(1, reducer)
+
+    print(construction_1.get_total_weight())
+    print(construction_1.get_total_painting_area())
+
+    data = project_1.to_dict()
     print(data)
-    restored = restore_element(data)
-    print(restored.get_weight()) 
+    projet = Project.from_dict(data)
+    print(projet.get_display_string())
 
 if __name__ == "__main__":
     main()
