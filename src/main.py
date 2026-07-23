@@ -1,5 +1,6 @@
 import tkinter as tk
 from src.utils.data_loaders import DataLoader
+from src.gui.main_window import Main_window
 # for tests!!!!!!
 from src.domain.base_element import Base_Element
 from src.domain.calculated_element import Calculated_element
@@ -14,9 +15,10 @@ loader = DataLoader()
 
 des = loader.get('steel_grades.json')
 mat = des['Ст3']
+
 def main():
+
     # Elements test:
-    
     elements_list = [
         Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2),
         Sheet(density=mat, params={'length' : 2500, 'width' : 1250, 'thickness' : 8}, quantity=2),
@@ -49,19 +51,12 @@ def main():
     construction_1.add_element(Pipe(density=mat, params={'diameter': 219, 'thickness': 6, 'length' : 12.5}, quantity=2))
     
     project_1.add_construction(construction_1)
-
-    print(construction_1.get_total_weight())
-    print(construction_1.get_total_painting_area())
-
-    construction_1.replace_element(1, reducer)
-
-    print(construction_1.get_total_weight())
-    print(construction_1.get_total_painting_area())
-
-    data = project_1.to_dict()
-    print(data)
-    projet = Project.from_dict(data)
-    print(projet.get_display_string())
+    # test_end
+    root = tk.Tk()
+    app = Main_window(root)
+    app.project = project_1
+    app.refresh_constructions_listbox()
+    root.mainloop()
 
 if __name__ == "__main__":
     main()
