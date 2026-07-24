@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.domain.construction import Construction
+from src.gui.element_editor import Element_editor
 
 class Construction_Editor:
     def __init__(self, root, main_window, project, edit_index = None):
@@ -23,8 +24,7 @@ class Construction_Editor:
             # Вернуться на мейн в любом случае при нажатии кнопки
 
             if self.edit_index is not None:
-                existing_construction = self.project.get_construction(self.edit_index)
-                existing = project.get_construction(edit_index)
+                existing = self.project.get_construction(edit_index)
                 self.construction.name = existing.name
                 self.construction.quantity = existing.quantity
                 self.construction.elements_list = existing.get_elements_list().copy()
@@ -97,14 +97,20 @@ class Construction_Editor:
 
     def on_save(self):
         # Чтение полей и валидация
-        name =self.entries["name"].get().strip()
+        name = self.entries["name"].get().strip()
         if not name:
-            messagebox.showerror('ошибка','Введите название')
-            return 0
-        quantity = int(self.entries["quantity"].get())
+            messagebox.showerror("Ошибка", "Введите название")
+            return
+
+        try:
+            quantity = int(self.entries["quantity"].get())
+        except ValueError:
+            messagebox.showerror("Ошибка", "Количество должно быть числом")
+            return
+
         if quantity <= 0:
-            messagebox.showerror('ошибка','Введено неверное количество')
-            return 0
+            messagebox.showerror("Ошибка", "Количество должно быть больше 0")
+            return
 
         self.construction.name = name
         self.construction.quantity = quantity
@@ -123,10 +129,22 @@ class Construction_Editor:
         self.window.destroy()
 
     def on_add(self):
-        messagebox.showinfo('Нажата кнопка "Добавить элемент"')
+        Element_editor(
+            root = self,
+            main_window=self.window,
+            construction=self.construction,
+            edit_index=None
+        )
 
     def on_edit(self):
-        messagebox.showinfo('Нажата кнопка "Редактировать элемент"')
+        selection = self.listbox.curselection()
+        if selection:
+            Element_editor(
+                root = self,
+                main_window=self.window,
+                construction=self.construction,
+                edit_index=selection[0]
+            )
 
     def on_delete(self):
         selection = self.listbox.curselection()

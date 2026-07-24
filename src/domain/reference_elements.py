@@ -17,11 +17,11 @@ class Beam(Reference_element):
     
     def get_unit_weight(self):
         weight_data = self.loader.get('beams.json')['weight']
-        return weight_data[self.params['size']] * self.params['length']
+        return weight_data[self.params['size']] * float(self.params['length'])
         
     def get_unit_painting_area(self):
         area_data = self.loader.get('beams.json')['area']
-        return area_data[self.params['size']] * self.params['length']
+        return area_data[self.params['size']] * float(self.params['length'])
     
 class Channel(Reference_element):
     def __init__(self, params, quantity=1):
