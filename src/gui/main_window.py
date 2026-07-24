@@ -1,7 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
+import json
 from src.domain.project import Project
 from src.gui.construction_editor import Construction_Editor
+from src.utils.data_loaders import get_save_dir
 
 class Main_window:
     def __init__(self, root):
@@ -28,10 +30,10 @@ class Main_window:
         toolbar_frame = ttk.Frame(self.root)
         toolbar_frame.pack(fill=tk.X, expand=True, padx=15, pady=10)
 
-        self.btn_save = ttk.Button(toolbar_frame, text="Сохранить", command=self.on_save)
+        self.btn_save = ttk.Button(toolbar_frame, text="Сохранить текущий проект", command=self.on_save)
         self.btn_save.pack(side=tk.LEFT, padx=5)
         
-        self.btn_load = ttk.Button(toolbar_frame, text="Загрузить", command=self.on_load)
+        self.btn_load = ttk.Button(toolbar_frame, text="Загрузить проект", command=self.on_load)
         self.btn_load.pack(side=tk.LEFT, padx=5)
 
         ttk.Separator(self.root, orient='horizontal').pack(fill=tk.X, padx=15, pady=5)
@@ -96,10 +98,45 @@ class Main_window:
         self.refresh_constructions_listbox()
 
     def on_delete(self):
-        messagebox.showinfo('Info', 'Нажата кнопка "Удалить элемент"')
+        selection = self.listbox.curselection()
+        if selection:
+            self.project.remove_construction(selection[0])
+            self.refresh_constructions_listbox()
 
     def on_save(self):
-        messagebox.showinfo('Info', 'Нажата кнопка "Сохранить проект"')
+        save_dir = get_save_dir()
+        filepath = filedialog.asksaveasfilename(
+            title="Сохранить проект",
+            initialdir=save_dir,
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json")]
+        )
+        if not filepath:
+            return
+
+        try:
+            data = self.project.to_dict()
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+            messagebox.showinfo("Успех", f"Проект сохранён:\n{filepath}")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось сохранить проект:\n{e}")
 
     def on_load(self):
-        messagebox.showinfo('Info', 'Нажата кнопка "Загрузить проект"')
+        save_dir = get_save_dir()
+        filepath = filedialog.askopenfilename(
+            title="Загрузить проект",
+            initialdir=save_dir,
+            filetypes=[("JSON files", "*.json")]
+        )
+        if not filepath:
+            return
+
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            self.project = Project.from_dict(data)
+            self.refresh_constructions_listbox()
+            messagebox.showinfo("Успех", f"Проект загружен:\n{filepath}")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось загрузить проект:\n{e}")

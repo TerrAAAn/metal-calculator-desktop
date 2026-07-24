@@ -29,3 +29,13 @@ class DataLoader:
         if elements_name not in self.cache:
             self.cache[elements_name] = self.load_data(elements_name)
         return self.cache[elements_name]
+
+def get_save_dir():
+    # Возвращение папки для сохранений
+    if getattr(sys, 'frozen', False):
+        base = Path(sys.executable).parent
+    else:
+        base = Path(__file__).parent.parent.parent
+    save_dir = base / "saves"
+    save_dir.mkdir(exist_ok=True)
+    return save_dir

@@ -1,0 +1,94 @@
+{
+    "project_name": "Amogus",
+    "construction_list": [
+        {
+            "name": "Опора 1",
+            "quantity": 2,
+            "elements_list": [
+                {
+                    "element_name": "Beam",
+                    "params": {
+                        "size": "10б1",
+                        "length": 10
+                    },
+                    "quantity": 2,
+                    "weight": 162.0,
+                    "painting_area": 8.0
+                },
+                {
+                    "element_name": "Pipe",
+                    "params": {
+                        "diameter": 219,
+                        "thickness": 6,
+                        "length": 12.5
+                    },
+                    "density": 7850,
+                    "quantity": 2,
+                    "weight": 787.9343339249998,
+                    "painting_area": 17.20020525
+                }
+            ]
+        },
+        {
+            "name": "Металлоконструкция",
+            "quantity": 1,
+            "elements_list": [
+                {
+                    "element_name": "Cap",
+                    "params": {
+                        "diameter": 57.0,
+                        "thickness": 3.5
+                    },
+                    "density": 7850,
+                    "quantity": 1.0,
+                    "weight": 0.0701095092193125,
+                    "painting_area": 0.0025517564775
+                },
+                {
+                    "element_name": "Profile_pipe",
+                    "params": {
+                        "width": 100.0,
+                        "height": 100.0,
+                        "thickness": 3.0,
+                        "length": 1.0
+                    },
+                    "density": 7850,
+                    "quantity": 1.0,
+                    "weight": 9.137400000000014,
+                    "painting_area": 0.4
+                },
+                {
+                    "element_name": "Pipe",
+                    "params": {
+                        "diameter": 57.0,
+                        "thickness": 3.5,
+                        "length": 1.0
+                    },
+                    "density": 7850,
+                    "quantity": 1.0,
+                    "weight": 4.617862410874998,
+                    "painting_area": 0.17907063
+                },
+                {
+                    "element_name": "Beam",
+                    "params": {
+                        "size": "10б1",
+                        "length": 1.0
+                    },
+                    "quantity": 1.0,
+                    "weight": 8.1,
+                    "painting_area": 0.4
+                },
+                {
+                    "element_name": "Reducer",
+                    "params": {
+                        "size": "57x32"
+                    },
+                    "quantity": 1.0,
+                    "weight": 0.3,
+                    "painting_area": 0.01234
+                }
+            ]
+        }
+    ]
+}
