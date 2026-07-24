@@ -1,97 +1,142 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from src.gui.construction_editor import ConstructionEditor
-from src.gui.report_view import ReportView
+from tkinter import ttk, messagebox, filedialog
+import json
+from src.domain.project import Project
+from src.gui.construction_editor import Construction_Editor
+from src.utils.data_loaders import get_save_dir
 
-class MainWindow:
-    def __init__(self, root, weight_calculator, area_calculator, data_loader):
+class Main_window:
+    def __init__(self, root):
         self.root = root
-        self.weight_calculator = weight_calculator
-        self.area_calculator = area_calculator
-        self.data_loader = data_loader
-        
-        self.constructions = []
-
+        self.project = Project('Новый проект')
         self.root.title("Калькулятор металлоконструкций")
-        self.root.geometry("600x400")
+        self.root.geometry("800x600")
+        self.root.resizable(False, False)
 
         self.create_widgets()
-        self.refresh_list()
 
     def create_widgets(self):
+        style = ttk.Style()
+        style.theme_use("clam")
+        style.configure("Header.TLabel", font=("Segoe UI", 14, "bold"), foreground="#1e3a8a")  # тёмно-синий
+        style.configure("Accent.TButton", font=("Segoe UI", 10, "bold"), foreground="#ffffff", background="#2563eb")  
+        style.map("Accent.TButton", background=[("active", "#1d4ed8")])
+        style.configure("Del.TButton", font=("Segoe UI", 10, "bold"), foreground="#ffffff", background="#be2828")  
+        style.map("Del.TButton", background=[("active", "#9e2b2b")])
+        style.configure("Redo.TButton", font=("Segoe UI", 10, "bold"), foreground="#ffffff", background="#acbe28")  
+        style.map("Redo.TButton", background=[("active", "#808b2e")])
+
+        # Верхний тулбар
+        toolbar_frame = ttk.Frame(self.root)
+        toolbar_frame.pack(fill=tk.X, expand=True, padx=15, pady=10)
+
+        self.btn_save = ttk.Button(toolbar_frame, text="Сохранить текущий проект", command=self.on_save)
+        self.btn_save.pack(side=tk.LEFT, padx=5)
+        
+        self.btn_load = ttk.Button(toolbar_frame, text="Загрузить проект", command=self.on_load)
+        self.btn_load.pack(side=tk.LEFT, padx=5)
+
+        ttk.Separator(self.root, orient='horizontal').pack(fill=tk.X, padx=15, pady=5)
+
+        # Список
+        ttk.Label(self.root, text="Список металлоконструкций", style="Header.TLabel").pack(anchor=tk.W, padx=15, pady=(5, 5)) 
         list_frame = ttk.Frame(self.root)
-        list_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        list_frame.pack(fill=tk.X, expand=True, padx=10, pady=10)
+        self.listbox = tk.Listbox(
+            list_frame,
+            height=15,
+            font=("Segoe UI", 10),
+            bg="#ffffff",
+            fg="#1e293b",
+            selectbackground="#3b82f6",
+            selectforeground="#ffffff",
+            relief=tk.FLAT,
+            highlightthickness=0
+        )
+        self.listbox.pack(fill=tk.BOTH, expand=True)
 
-        ttk.Label(list_frame, text="Список металлоконструкций", font=("Arial", 12)).pack(anchor=tk.NW)
-        # Список элементов
-        self.listbox = tk.Listbox(list_frame, height=15, selectmode=tk.SINGLE)
-        self.listbox.pack(fill=tk.X, expand=True, pady=5)
+        ttk.Separator(self.root, orient='horizontal').pack(fill=tk.X, padx=15, pady=5)
 
-        button_frame = ttk.Frame(self.root)
-        button_frame.pack(fill=tk.X, padx=10, pady=10)
+        # Кнопки управления
+        buttons_frame = ttk.Frame(self.root)
+        buttons_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.btn_add = ttk.Button(button_frame, text="Добавить", command=self.on_add)
+        self.btn_add = ttk.Button(buttons_frame, text="Добавить", command=self.on_add, style="Accent.TButton")
         self.btn_add.pack(side=tk.LEFT, padx=5)
 
-        self.btn_edit = ttk.Button(button_frame, text="Редактировать", command=self.on_edit)
+        self.btn_edit = ttk.Button(buttons_frame, text="Редактировать", command=self.on_edit, style="Redo.TButton")
         self.btn_edit.pack(side=tk.LEFT, padx=5)
         
-        self.btn_delete = ttk.Button(button_frame, text="Удалить", command=self.on_delete)
+        self.btn_delete = ttk.Button(buttons_frame, text="Удалить", command=self.on_delete, style="Del.TButton")
         self.btn_delete.pack(side=tk.LEFT, padx=5)
 
-        self.btn_report = ttk.Button(button_frame, text="Расчёт", command=self.on_report)
-        self.btn_report.pack(side=tk.RIGHT, padx=5)
-
-    def refresh_list(self):
+    def refresh_constructions_listbox(self):
         self.listbox.delete(0, tk.END)
-        if len(self.constructions) == 0:
-            pass
-        else:
-            for construction in self.constructions:
-                display_text = f"{construction.name} (кол-во: {construction.quantity} шт)"
-                self.listbox.insert(tk.END, display_text)
-        
+        if len(self.project.construction_list) != 0:
+            for construction in self.project.construction_list:
+                self.listbox.insert(tk.END, construction.get_display_string()) 
 
     def on_add(self):
-        ConstructionEditor(
+        Construction_Editor(
+            root= self.root,
             main_window=self,
-            root=self.root, 
-            construction_list=self.constructions, 
-            weight_calculator=self.weight_calculator,
-            area_calculator=self.area_calculator,
-            data_loader=self.data_loader,
-            edit_index=None
-            )
-        
-    def on_delete(self):
-        selection = self.listbox.curselection()
-        if selection:
-            self.constructions.pop(selection[0])
-        else:
-            messagebox.showwarning("Info", "Выберете элемент для удаления")
-        self.refresh_list()
+            project= self.project,
+            edit_index= None
+        )
 
     def on_edit(self):
         selection = self.listbox.curselection()
         if selection:
-            ConstructionEditor(
+            Construction_Editor(
+                root= self.root,
                 main_window=self,
-                root=self.root,  
-                construction_list=self.constructions, 
-                weight_calculator=self.weight_calculator,
-                area_calculator=self.area_calculator,
-                data_loader=self.data_loader,
-                edit_index=selection[0]
+                project= self.project,
+                edit_index= selection[0]
                 )
         else:
-            messagebox.showwarning("Info", "Выберете элемент для редактирования")
-        self.refresh_list()
+            messagebox.showerror('Элемент для редактирования не выбран!')
+        self.refresh_constructions_listbox()
 
-    def on_report(self):
-        ReportView(
-            main_window=self.root,
-            construction_list=self.constructions,
-            weight_calculator=self.weight_calculator,
-            area_calculator=self.area_calculator,
-            data_loader=self.data_loader
+    def on_delete(self):
+        selection = self.listbox.curselection()
+        if selection:
+            self.project.remove_construction(selection[0])
+            self.refresh_constructions_listbox()
+
+    def on_save(self):
+        save_dir = get_save_dir()
+        filepath = filedialog.asksaveasfilename(
+            title="Сохранить проект",
+            initialdir=save_dir,
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json")]
         )
+        if not filepath:
+            return
+
+        try:
+            data = self.project.to_dict()
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+            messagebox.showinfo("Успех", f"Проект сохранён:\n{filepath}")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось сохранить проект:\n{e}")
+
+    def on_load(self):
+        save_dir = get_save_dir()
+        filepath = filedialog.askopenfilename(
+            title="Загрузить проект",
+            initialdir=save_dir,
+            filetypes=[("JSON files", "*.json")]
+        )
+        if not filepath:
+            return
+
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            self.project = Project.from_dict(data)
+            self.refresh_constructions_listbox()
+            messagebox.showinfo("Успех", f"Проект загружен:\n{filepath}")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось загрузить проект:\n{e}")
