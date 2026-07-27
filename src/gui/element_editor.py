@@ -20,6 +20,13 @@ class Element_editor:
 
         self.loader = DataLoader()
 
+        self.REFERENCE_MAP = {
+            "Балка": "beams.json",
+            "Швеллер": "channels.json",
+            "Отвод": "elbows.json",
+            "Переход": "reducers.json",
+        }
+
         self.create_widgets()
 
         if self.edit_index is not None:
@@ -124,6 +131,8 @@ class Element_editor:
             except ValueError:
                 params[key] = raw
 
+        
+
         material_name = self.material_var.get()
         materials = self.loader.get('steel_grades.json')
         density = materials.get(material_name)
@@ -133,15 +142,16 @@ class Element_editor:
             return  # если материал "Ст3 7850" -> берём число
 
         # Создаём элемент
-        element = create_element(element_type, params, density, quantity)
+        if self.validate_ref_elements(element_type, params):
+            element = create_element(element_type, params, density, quantity)
 
-        if self.edit_index is None:
-            self.construction.add_element(element)
-        else:
-            self.construction.replace_element(self.edit_index, element)
+            if self.edit_index is None:
+                self.construction.add_element(element)
+            else:
+                self.construction.replace_element(self.edit_index, element)
 
-        self.window.destroy()
-        self.root.refresh_elements_listbox()
+            self.window.destroy()
+            self.root.refresh_elements_listbox()
 
     def on_cancel(self):
         self.window.destroy()
@@ -177,3 +187,15 @@ class Element_editor:
             var = tk.StringVar(value=str(info.get("default", "")))
             self.entries[key] = var
             tk.Entry(self.param_frame, textvariable=var).grid(row=row, column=1, padx=5, pady=5)
+
+    def validate_ref_elements(self, element_type, params):
+        if element_type in self.REFERENCE_MAP.keys():
+            awaiting_sizes = self.loader.get(self.REFERENCE_MAP.get(element_type))
+            input_size = params.get('size')
+            if input_size not in awaiting_sizes['weight'].keys():
+                messagebox.showerror('Ошибка', f'Типоразмер {input_size} не найден в справочнике!')
+                return False
+            return True
+        else: 
+            return True
+
