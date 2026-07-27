@@ -10,10 +10,11 @@ class Main_window:
         self.root = root
         self.project = Project('Новый проект')
         self.root.title("Калькулятор металлоконструкций")
-        self.root.geometry("800x600")
+        self.root.geometry("1250x600")
         self.root.resizable(False, False)
 
         self.create_widgets()
+        self.refresh_constructions_listbox()
 
     def create_widgets(self):
         style = ttk.Style()
@@ -25,6 +26,26 @@ class Main_window:
         style.map("Del.TButton", background=[("active", "#9e2b2b")])
         style.configure("Redo.TButton", font=("Segoe UI", 10, "bold"), foreground="#ffffff", background="#acbe28")  
         style.map("Redo.TButton", background=[("active", "#808b2e")])
+        style.configure("Treeview", 
+            background="#f8fafc",
+            foreground="#1e293b",
+            rowheight=25,
+            fieldbackground="#f8fafc",
+            borderwidth=1,
+            relief="solid"
+        )
+        style.configure("Treeview.Heading", 
+            font=("Segoe UI", 10, "bold"),
+            foreground="#1e3a8a",
+            background="#e2e8f0",
+            relief="solid",
+            borderwidth=1
+        )
+        style.map("Treeview", 
+            background=[("selected", "#3b82f6")],
+            foreground=[("selected", "#ffffff")]
+        )
+        style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})])
 
         # Верхний тулбар
         toolbar_frame = ttk.Frame(self.root)
@@ -41,19 +62,35 @@ class Main_window:
         # Список
         ttk.Label(self.root, text="Список металлоконструкций", style="Header.TLabel").pack(anchor=tk.W, padx=15, pady=(5, 5)) 
         list_frame = ttk.Frame(self.root)
-        list_frame.pack(fill=tk.X, expand=True, padx=10, pady=10)
-        self.listbox = tk.Listbox(
+        columns = ("№", "Название", "Кол-во", "Вес, кг", "Площадь, м²", "Общий вес, кг", "Общая площадь, м²")
+        self.tree = ttk.Treeview(
             list_frame,
-            height=15,
-            font=("Segoe UI", 10),
-            bg="#ffffff",
-            fg="#1e293b",
-            selectbackground="#3b82f6",
-            selectforeground="#ffffff",
-            relief=tk.FLAT,
-            highlightthickness=0
+            columns=columns,
+            show="headings",
+            height=15
         )
-        self.listbox.pack(fill=tk.BOTH, expand=True)
+
+        # Заголовки
+        self.tree.heading("№", text="№")
+        self.tree.heading("Название", text="Название")
+        self.tree.heading("Кол-во", text="Кол-во")
+        self.tree.heading("Вес, кг", text="Вес, кг")
+        self.tree.heading("Площадь, м²", text="Площадь, м²")
+        self.tree.heading("Общий вес, кг", text="Общий вес, кг")
+        self.tree.heading("Общая площадь, м²", text="Общая площадь, м²")
+
+        # Ширина и выравнивание
+        self.tree.column("№", width=20, anchor="center")
+        self.tree.column("Название", width=250, anchor="w")
+        self.tree.column("Кол-во", width=40, anchor="center")
+        self.tree.column("Вес, кг", width=100, anchor="center")
+        self.tree.column("Площадь, м²", width=100, anchor="center")
+        self.tree.column("Общий вес, кг", width=100, anchor="center")
+        self.tree.column("Общая площадь, м²", width=100, anchor="center")
+
+        # Упаковка
+        list_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.tree.pack(fill=tk.BOTH, expand=True)
 
         ttk.Separator(self.root, orient='horizontal').pack(fill=tk.X, padx=15, pady=5)
 
@@ -71,10 +108,24 @@ class Main_window:
         self.btn_delete.pack(side=tk.LEFT, padx=5)
 
     def refresh_constructions_listbox(self):
-        self.listbox.delete(0, tk.END)
-        if len(self.project.construction_list) != 0:
-            for construction in self.project.construction_list:
-                self.listbox.insert(tk.END, construction.get_display_string()) 
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        
+        for i, construction in enumerate(self.project.construction_list, start=1):
+            self.tree.insert(
+                "",
+                tk.END,
+                values=(
+                    i,
+                    construction.name,
+                    construction.quantity,
+                    f"{construction.get_total_weight():.2f}",
+                    f"{construction.get_total_painting_area():.2f}",
+                    f"{construction.get_total_weight()*construction.quantity:.2f}",
+                    f"{construction.get_total_painting_area()*construction.quantity:.2f}"
+                )
+            )
 
     def on_add(self):
         Construction_Editor(
@@ -85,22 +136,23 @@ class Main_window:
         )
 
     def on_edit(self):
-        selection = self.listbox.curselection()
-        if selection:
+        selected = self.tree.selection()
+        if selected:
+            index = self.tree.index(selected[0])
             Construction_Editor(
                 root= self.root,
                 main_window=self,
                 project= self.project,
-                edit_index= selection[0]
+                edit_index= index
                 )
         else:
             messagebox.showerror('Элемент для редактирования не выбран!')
-        self.refresh_constructions_listbox()
 
     def on_delete(self):
-        selection = self.listbox.curselection()
-        if selection:
-            self.project.remove_construction(selection[0])
+        selected = self.tree.selection()
+        if selected:
+            index = self.tree.index(selected[0])
+            self.project.remove_construction(index)
             self.refresh_constructions_listbox()
 
     def on_save(self):

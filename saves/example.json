@@ -34,40 +34,14 @@
             "quantity": 1,
             "elements_list": [
                 {
-                    "element_name": "Cap",
+                    "element_name": "Channel",
                     "params": {
-                        "diameter": 57.0,
-                        "thickness": 3.5
-                    },
-                    "density": 7850,
-                    "quantity": 1.0,
-                    "weight": 0.0701095092193125,
-                    "painting_area": 0.0025517564775
-                },
-                {
-                    "element_name": "Profile_pipe",
-                    "params": {
-                        "width": 100.0,
-                        "height": 100.0,
-                        "thickness": 3.0,
+                        "size": "5у",
                         "length": 1.0
                     },
-                    "density": 7850,
                     "quantity": 1.0,
-                    "weight": 9.137400000000014,
-                    "painting_area": 0.4
-                },
-                {
-                    "element_name": "Pipe",
-                    "params": {
-                        "diameter": 57.0,
-                        "thickness": 3.5,
-                        "length": 1.0
-                    },
-                    "density": 7850,
-                    "quantity": 1.0,
-                    "weight": 4.617862410874998,
-                    "painting_area": 0.17907063
+                    "weight": 4.842,
+                    "painting_area": 0.209
                 },
                 {
                     "element_name": "Beam",
@@ -80,13 +54,16 @@
                     "painting_area": 0.4
                 },
                 {
-                    "element_name": "Reducer",
+                    "element_name": "Sheet",
                     "params": {
-                        "size": "57x32"
+                        "length": 1000.0,
+                        "width": 1000.0,
+                        "thickness": 4.0
                     },
-                    "quantity": 1.0,
-                    "weight": 0.3,
-                    "painting_area": 0.01234
+                    "density": 7850,
+                    "quantity": 0.4,
+                    "weight": 12.560000000000002,
+                    "painting_area": 0.4
                 }
             ]
         }

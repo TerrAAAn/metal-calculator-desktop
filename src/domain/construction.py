@@ -56,7 +56,7 @@ class Construction:
             raise AttributeError(f'Элемент {element} не имеет атрибута количество')
         
     def get_display_string(self):
-        return f'{self.name} - {self.quantity} шт. Вес: {round(self.get_total_weight(),2)} кг, Площадь окраски: {round(self.get_total_painting_area(),2)} м2'
+        return f'{self.name} - {self.quantity} шт. Вес: {round(self.get_total_weight(),2)} кг, Площадь окраски: {round(self.get_total_painting_area(),2)} м2', f'Общий вес: {round(self.get_total_weight()*self.quantity,2)} кг, Общая площадь окраски: {round(self.get_total_painting_area()*self.quantity,2)} м2'
     
     def to_dict(self):
         return {

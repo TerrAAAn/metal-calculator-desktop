@@ -125,7 +125,7 @@ class Element_editor:
 
         params = {}
         for key, var in self.entries.items():
-            raw = var.get().strip()
+            raw = var.get().strip().lower()
             try:
                 params[key] = self.to_float(raw)
             except ValueError:
